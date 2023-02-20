@@ -33,3 +33,6 @@
 #timer-stop {
   display: none;
 }
+.item-list {
+  list-style: none;
+}
