@@ -7,13 +7,13 @@ export default class App extends Component {
     super(props);
     this.state = {
       counterChecked: true,
-      tdListChecked: true
+      tdListChecked: true,
     };
   }
   handleCounterChecked = (e) => {
     this.setState({
       ...this.state,
-      counterChecked: !this.state.counterChecked
+      counterChecked: !this.state.counterChecked,
     });
     console.log(this.state.counterChecked);
   };
@@ -58,7 +58,7 @@ class Counter extends Component {
     super(props);
     this.state = {
       count: 0,
-      timer: null
+      timer: null,
     };
   }
   handleIncrement = () => {
@@ -134,23 +134,23 @@ class Counter extends Component {
 class TdList extends Component {
   state = {
     todoList: [],
-    input: ""
+    input: "",
   };
   handleOnChange = (e) => {
     this.setState({
-      input: e.target.value
+      input: e.target.value,
     });
     console.log(this.state.input);
   };
   addTodo = () => {
     const newTodoList = [
       ...this.state.todoList,
-      { id: uuid(), todo: this.state.input }
+      { id: uuid(), todo: this.state.input },
     ].sort((x, y) => (x.todo < y.todo ? 1 : x.todo > y.todo ? -1 : 0));
     console.log(newTodoList);
     this.setState({
       todoList: newTodoList,
-      input: ""
+      input: "",
     });
   };
   deleteTodo = (id) => {
