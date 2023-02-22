@@ -1,5 +1,5 @@
 import "./styles.css";
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { v4 as uuid } from "uuid";
 
 export default class App extends Component {
@@ -25,7 +25,7 @@ export default class App extends Component {
     return (
       <div className="App">
         <div>
-          <label for="counter">
+          <label htmlFor="counter">
             Counter
             <input
               type="checkbox"
@@ -34,8 +34,7 @@ export default class App extends Component {
               onChange={this.handleCounterChecked}
             />
           </label>
-          <label for="tdList">
-            {" "}
+          <label htmlFor="tdList">
             TdList
             <input
               type="checkbox"
@@ -77,9 +76,11 @@ class Counter extends Component {
     }, 1000);
   };
   timerStart = () => {
-    this.state.timer = setInterval(() => {
-      this.setState({ count: this.state.count + 1 });
-    }, 1000);
+    this.setState({
+      timer: setInterval(() => {
+        this.setState({ count: this.state.count + 1 });
+      }, 1000)
+    });
     let startBtn = document.querySelector("#timer-start");
     let stopBtn = document.querySelector("#timer-stop");
     startBtn.style.display = "none";
@@ -146,8 +147,7 @@ class TdList extends Component {
     const newTodoList = [
       ...this.state.todoList,
       { id: uuid(), todo: this.state.input }
-    ].sort((x, y) => (x.todo < y.todo ? 1 : x.todo > y.todo ? -1 : 0));
-    console.log(newTodoList);
+    ];
     this.setState({
       todoList: newTodoList,
       input: ""
@@ -159,6 +159,23 @@ class TdList extends Component {
     });
     this.setState({ ...this.state, todoList: newTodoList });
   };
+  handleChange = (e) => {
+    console.log(e.target.value);
+    e.target.value === "Z-A"
+      ? this.setState({
+          ...this.state,
+          todoList: this.state.todoList.sort((x, y) =>
+            x.todo < y.todo ? 1 : x.todo > y.todo ? -1 : 0
+          )
+        })
+      : this.setState({
+          ...this.state,
+          todoList: this.state.todoList.sort((x, y) =>
+            x.todo > y.todo ? 1 : x.todo < y.todo ? -1 : 0
+          )
+        });
+    console.log(this.state.todoList);
+  };
   render() {
     return (
       <div>
@@ -169,6 +186,7 @@ class TdList extends Component {
           addTodo={this.addTodo}
         />
         <ItemList todoList={this.state.todoList} deleteTodo={this.deleteTodo} />
+        <DropDown handleChange={this.handleChange} />
       </div>
     );
   }
@@ -178,6 +196,7 @@ const Inputfield = (props) => {
   return (
     <div>
       <input
+        type="text"
         value={input}
         placeholder="add an todo"
         onChange={handleOnChange}
@@ -195,6 +214,18 @@ const ItemList = (props) => {
         return <Item key={item.id} item={item} deleteTodo={deleteTodo} />;
       })}
     </ul>
+  );
+};
+const DropDown = (props) => {
+  const { handleChange } = props;
+  return (
+    <div>
+      <label>Choose an order for todos</label>
+      <select name="order" onChange={handleChange}>
+        <option value="A-Z">A-Z</option>
+        <option value="Z-A">Z-A</option>
+      </select>
+    </div>
   );
 };
 
